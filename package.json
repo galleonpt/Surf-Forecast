@@ -7,6 +7,7 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node dist/src/index.js",
+    "dev": "ts-node-dev src/index.ts",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix"
   },
@@ -15,7 +16,7 @@
     "url": "git+https://github.com/galleonpt/Surf-Forecast.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "José Luís",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/galleonpt/Surf-Forecast/issues"
@@ -27,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "eslint": "^7.7.0",
+    "ts-node-dev": "^1.0.0-pre.61",
     "typescript": "^4.0.2"
   },
   "dependencies": {
