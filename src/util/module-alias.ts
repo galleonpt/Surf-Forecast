@@ -1,5 +1,5 @@
-const path = require("path");
-const moduleAlias = require("module-alias");
+import path from "path";
+import moduleAlias from "module-alias";
 
 const files = path.resolve(__dirname, "../..");
 
