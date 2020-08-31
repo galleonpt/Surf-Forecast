@@ -10,7 +10,7 @@
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
-    "test:functional": "jest --projects ./test --runInBand --detectOpenHandles"
+    "test:functional": "jest --projects ./test --runInBand --forceExit"
   },
   "repository": {
     "type": "git",
