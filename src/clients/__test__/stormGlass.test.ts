@@ -1,3 +1,9 @@
+/**Teste:
+ *
+ * Pegar nos dados na Api externa e normalizar para dessa forma conseguir-mos utilizar na nossa Api
+ *
+ */
+
 import axios from 'axios';
 import { StormGlass } from '@src/clients/stormGlass';
 import stormGlassWeather3HoursFixtures from '@test/fixtures/stormGlass_wheather_3H.json';
@@ -10,7 +16,9 @@ describe('StormGlass client', () => {
     const latitude = -33.123123;
     const longitude = 151.123123;
 
-    axios.get = jest.fn().mockResolvedValue(stormGlassWeather3HoursFixtures);
+    axios.get = jest
+      .fn()
+      .mockResolvedValue({ data: stormGlassWeather3HoursFixtures });
 
     const stormGlass = new StormGlass(axios);
 
