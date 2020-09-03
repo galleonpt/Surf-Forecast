@@ -1,4 +1,5 @@
 import { AxiosStatic } from 'axios';
+import { errorMonitor } from 'events';
 
 export interface StormGlassPointSource {
   [key: string]: number;
@@ -42,16 +43,21 @@ export class StormGlass {
     latitude: number,
     longitude: number
   ): Promise<Array<ForecastPoint>> {
-    const response = await this.request.get<StormGlassResponse>(
-      `https://api.stormglass.io/v2/weather/point?lat=${latitude}&lng=${longitude}&params=${this.stormGlassParams}source=${this.stormGlassSource}`,
-      {
-        headers: {
-          Authorization: 'fake-token',
-        },
-      }
-    );
-
-    return this.normalizeResponse(response.data);
+    try {
+      const response = await this.request.get<StormGlassResponse>(
+        `https://api.stormglass.io/v2/weather/point?lat=${latitude}&lng=${longitude}&params=${this.stormGlassParams}source=${this.stormGlassSource}`,
+        {
+          headers: {
+            Authorization: 'fake-token',
+          },
+        }
+      );
+      return this.normalizeResponse(response.data);
+    } catch (err) {
+      throw new Error(
+        `Unexpected error when trying to communicate to StormGlass: ${err.message}`
+      );
+    }
   }
 
   //funcao que recebe os dados da api externa e faz a normalizacao dos dados
