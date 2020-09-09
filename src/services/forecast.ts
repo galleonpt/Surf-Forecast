@@ -17,12 +17,17 @@ export interface Beach {
 
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
 
+export interface TimeForecast {
+  time: string;
+  forecast: Array<BeachForecast>;
+}
+
 export class Forecast {
   constructor(protected stormGlass = new StormGlass()) {}
 
   public async processForecastForBeaches(
     beaches: Array<Beach>
-  ): Promise<Array<BeachForecast>> {
+  ): Promise<Array<TimeForecast>> {
     const pointsWithCorrecetSources: Array<BeachForecast> = [];
 
     for (const beach of beaches) {
@@ -40,6 +45,24 @@ export class Forecast {
       }));
       pointsWithCorrecetSources.push(...enrichedBeachData);
     }
-    return pointsWithCorrecetSources;
+    return this.mapForecastByTime(pointsWithCorrecetSources);
+  }
+
+  private mapForecastByTime(
+    forecast: Array<BeachForecast>
+  ): Array<TimeForecast> {
+    const forecastByTime: Array<TimeForecast> = [];
+
+    for (const point of forecast) {
+      const timePoint = forecastByTime.find((f) => f.time === point.time);
+
+      if (!timePoint) {
+        forecastByTime.push({
+          time: point.time,
+          forecast: [point],
+        });
+      } else timePoint.forecast.push(point);
+    }
+    return forecastByTime;
   }
 }
