@@ -1,4 +1,5 @@
 import { StormGlass, ForecastPoint } from '@src/clients/stormGlass';
+import { InternalError } from '@src/util/errors/internal-error';
 
 export enum BeachPosition {
   S = 'S',
@@ -22,30 +23,48 @@ export interface TimeForecast {
   forecast: Array<BeachForecast>;
 }
 
+export class ForecastProcessingInternalError extends InternalError {
+  constructor(message: string) {
+    super(`Unexpecting error during the forecast processing: ${message}`);
+  }
+}
+
 export class Forecast {
   constructor(protected stormGlass = new StormGlass()) {}
 
   public async processForecastForBeaches(
     beaches: Array<Beach>
   ): Promise<Array<TimeForecast>> {
-    const pointsWithCorrecetSources: Array<BeachForecast> = [];
+    const pointsWithCorrectSources: Array<BeachForecast> = [];
 
-    for (const beach of beaches) {
-      const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
+    try {
+      for (const beach of beaches) {
+        const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
 
-      const enrichedBeachData = points.map((data) => ({
-        ...{
-          lat: beach.lat,
-          lng: beach.lng,
-          name: beach.name,
-          position: beach.position,
-          rating: 1,
-        },
-        ...data,
-      }));
-      pointsWithCorrecetSources.push(...enrichedBeachData);
+        const enrichedBeachData = this.enrichedBeachData(points, beach);
+
+        pointsWithCorrectSources.push(...enrichedBeachData);
+      }
+      return this.mapForecastByTime(pointsWithCorrectSources);
+    } catch (error) {
+      throw new ForecastProcessingInternalError(error);
     }
-    return this.mapForecastByTime(pointsWithCorrecetSources);
+  }
+
+  private enrichedBeachData(
+    points: Array<ForecastPoint>,
+    beach: Beach
+  ): Array<BeachForecast> {
+    return points.map((data) => ({
+      ...{
+        lat: beach.lat,
+        lng: beach.lng,
+        name: beach.name,
+        position: beach.position,
+        rating: 1,
+      },
+      ...data,
+    }));
   }
 
   private mapForecastByTime(
