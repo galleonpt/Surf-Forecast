@@ -4,7 +4,7 @@ import { Application } from 'express';
 import bodyParser from 'body-parser';
 import { ForecastController } from './controllers/forecastController';
 import * as database from '@src/database';
-import { BeachController } from './controllers/beach';
+import { BeachController } from './controllers/beachController';
 export class SetupServer extends Server {
   constructor(private port = 3000) {
     super();
