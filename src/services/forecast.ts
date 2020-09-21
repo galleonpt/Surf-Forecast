@@ -46,8 +46,8 @@ export class Forecast {
         pointsWithCorrectSources.push(...enrichedBeachData);
       }
       return this.mapForecastByTime(pointsWithCorrectSources);
-    } catch (error) {
-      throw new ForecastProcessingInternalError(error);
+    } catch (err) {
+      throw new ForecastProcessingInternalError(err.message);
     }
   }
 
