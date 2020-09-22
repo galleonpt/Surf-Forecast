@@ -69,7 +69,7 @@ export class StormGlass {
           'apiUrl'
         )}/weather/point?lat=${latitude}&lng=${longitude}&params=${
           this.stormGlassParams
-        }source=${this.stormGlassSource}`,
+        }&source=${this.stormGlassSource}`,
         {
           headers: {
             Authorization: stormGlassResourceConfig.get('apiToken'),

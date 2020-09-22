@@ -1,7 +1,7 @@
 {
   "App": {
     "database": {
-      "mongoUrl": ""
+      "mongoUrl": "mongodb+srv://admin:admin@surf-forecast.ipkda.mongodb.net/surf-forecast?retryWrites=true&w=majority"
     },
     "resources": {
       "StormGlass": {
