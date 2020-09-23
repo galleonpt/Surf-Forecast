@@ -1,7 +1,8 @@
 {
   "App": {
+    "port": 3000,
     "database": {
-      "mongoUrl": "mongodb+srv://admin:admin@surf-forecast.ipkda.mongodb.net/surf-forecast?retryWrites=true&w=majority"
+      "mongoUrl": ""
     },
     "resources": {
       "StormGlass": {

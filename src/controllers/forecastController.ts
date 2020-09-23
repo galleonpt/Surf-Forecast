@@ -18,6 +18,8 @@ export class ForecastController {
 
       response.status(200).send(forecastData);
     } catch (err) {
+      console.error(err);
+
       response.status(500).send({ error: 'Something went wrong' });
     }
   }
