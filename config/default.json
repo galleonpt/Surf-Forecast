@@ -4,6 +4,10 @@
     "database": {
       "mongoUrl": ""
     },
+    "auth": {
+      "key": "some-key",
+      "tokenExpiresIn": "2000000"
+    },
     "resources": {
       "StormGlass": {
         "apiUrl": "https://api.stormglass.io/v2",
