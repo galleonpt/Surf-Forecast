@@ -87,9 +87,9 @@ describe('Forecast service', () => {
     ];
 
     const forecast = new Forecast(mockedStormGlassService);
-    const beatchesRatings = await forecast.processForecastForBeaches(beaches);
+    const beachesRatings = await forecast.processForecastForBeaches(beaches);
 
-    expect(beatchesRatings).toEqual(expectedResponse);
+    expect(beachesRatings).toEqual(expectedResponse);
   });
 
   it('should return an empty list when the list array is empty', async () => {
