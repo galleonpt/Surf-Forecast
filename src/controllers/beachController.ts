@@ -1,5 +1,5 @@
 import { ClassMiddleware, Controller, Post } from '@overnightjs/core';
-import { AuthMiddleware } from '@src/middlewares/auth';
+import { AuthMiddleware } from '@src/middleware/auth';
 import { Beach } from '@src/models/beach';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';

@@ -19,7 +19,6 @@ export default class AuthService {
     return await bcrypt.compare(pw, hashedPW);
   }
 
-  /*eslint no-new: "error"*/
   public static generateToken(payload: object): string {
     return jwt.sign(payload, config.get('App.auth.key'), {
       expiresIn: config.get('App.auth.tokenExpiresIn'),
