@@ -6,6 +6,7 @@ import { ForecastController } from './controllers/forecastController';
 import * as database from '@src/database';
 import { BeachController } from './controllers/beachController';
 import { UsersController } from './controllers/usersController';
+import logger from './logger';
 export class SetupServer extends Server {
   constructor(private port = 3000 || process.env.PORT) {
     super();
@@ -45,7 +46,7 @@ export class SetupServer extends Server {
 
   public start(): void {
     this.app.listen(this.port, () => {
-      console.info('Server listening on port:', this.port);
+      logger.info('Server listening on port: ' + this.port);
     });
   }
 }
