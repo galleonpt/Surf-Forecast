@@ -2,7 +2,7 @@ import { ClassMiddleware, Controller, Get } from '@overnightjs/core';
 import { AuthMiddleware } from '@src/middleware/auth';
 import { Beach } from '@src/models/beach';
 import { Forecast } from '@src/services/forecast';
-import { Request, Response } from 'express';
+import { Response, Request } from 'express';
 
 const forecast = new Forecast();
 

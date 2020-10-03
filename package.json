@@ -7,7 +7,7 @@
     "build": "tsc",
     "test": "npm run test:unit && npm run test:functional",
     "start": "npm run build && node dist/src/index.js",
-    "start:local": "ts-node-dev src/index.ts",
+    "start:local": "ts-node-dev --transpile-only src/index.ts | pino-pretty -c",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
