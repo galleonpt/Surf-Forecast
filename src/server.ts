@@ -7,7 +7,7 @@ import * as database from '@src/database';
 import { BeachController } from './controllers/beachController';
 import { UsersController } from './controllers/usersController';
 export class SetupServer extends Server {
-  constructor(private port = 3000) {
+  constructor(private port = 3000 || process.env.PORT) {
     super();
   }
 
