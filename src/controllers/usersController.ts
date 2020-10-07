@@ -3,6 +3,7 @@ import { Response, Request } from 'express';
 import { User } from '@src/models/user';
 import { BaseController } from '.';
 import AuthService from '@src/services/auth';
+import APIError from '@src/util/errors/api-error';
 
 @Controller('users')
 export class UsersController extends BaseController {
@@ -26,15 +27,14 @@ export class UsersController extends BaseController {
     const user = await User.findOne({ email });
 
     if (!user)
-      return response.status(401).send({
+      return this.sendErrorResponse(response, {
         code: 401,
-        error: 'User not found!',
+        message: 'User not found!',
       });
-
     if (!(await AuthService.comparePassword(password, user.password))) {
-      return response.status(401).send({
+      return this.sendErrorResponse(response, {
         code: 401,
-        error: 'Incorrect Password!',
+        message: 'Incorrect Password',
       });
     }
 

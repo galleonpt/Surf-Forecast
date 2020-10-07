@@ -7,6 +7,9 @@ import * as database from '@src/database';
 import { BeachController } from './controllers/beachController';
 import { UsersController } from './controllers/usersController';
 import logger from './logger';
+import expressPino from 'express-pino-logger';
+import cors from 'cors';
+
 export class SetupServer extends Server {
   constructor(private port = 3000 || process.env.PORT) {
     super();
@@ -21,6 +24,16 @@ export class SetupServer extends Server {
   //configs do express
   private setupExpress(): void {
     this.app.use(bodyParser.json());
+    this.app.use(
+      expressPino({
+        logger,
+      })
+    );
+    this.app.use(
+      cors({
+        origin: '*',
+      })
+    );
   }
 
   //inicializar os constrollers
