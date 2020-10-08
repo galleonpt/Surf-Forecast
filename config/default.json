@@ -2,7 +2,7 @@
   "App": {
     "port": 3000,
     "database": {
-      "mongoUrl": ""
+      "mongoUrl": "mongodb+srv://admin:admin@surf-forecast.ipkda.mongodb.net/surf-forecast?retryWrites=true&w=majority"
     },
     "auth": {
       "key": "some-key",
