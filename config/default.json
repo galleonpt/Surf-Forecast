@@ -2,7 +2,7 @@
   "App": {
     "port": 3000,
     "database": {
-      "mongoUrl": "mongodb+srv://admin:admin@surf-forecast.ipkda.mongodb.net/surf-forecast?retryWrites=true&w=majority"
+      "mongoUrl": ""
     },
     "auth": {
       "key": "some-key",
@@ -11,7 +11,7 @@
     "resources": {
       "StormGlass": {
         "apiUrl": "https://api.stormglass.io/v2",
-        "apiToken": "8cdd8c00-ec80-11ea-a78a-0242ac130002-8cdd8cc8-ec80-11ea-a78a-0242ac130002"
+        "apiToken": "do-not-hard-code"
       }
     },
     "logger": {
