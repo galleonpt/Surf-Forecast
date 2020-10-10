@@ -1,6 +1,7 @@
 import { StormGlass, ForecastPoint } from '@src/clients/stormGlass';
 import { Beach } from '@src/models/beach';
 import { InternalError } from '@src/util/errors/internal-error';
+import { Rating } from './rating';
 
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
 
@@ -11,12 +12,12 @@ export interface TimeForecast {
 
 export class ForecastProcessingInternalError extends InternalError {
   constructor(message: string) {
-    super(`Unexpecting error during the forecast processing: ${message}`);
+    super(`Unexpected error during the forecast processing: ${message}`);
   }
 }
 
 export class Forecast {
-  constructor(protected stormGlass = new StormGlass()) {}
+  constructor(protected stormGlass = new StormGlass(), protected RatingService:typeof Rating=Rating) {}
 
   public async processForecastForBeaches(
     beaches: Array<Beach>
@@ -25,9 +26,11 @@ export class Forecast {
 
     try {
       for (const beach of beaches) {
+        const rating = new this.RatingService(beach);
+
         const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
 
-        const enrichedBeachData = this.enrichedBeachData(points, beach);
+        const enrichedBeachData = this.enrichedBeachData(points, beach, rating);
 
         pointsWithCorrectSources.push(...enrichedBeachData);
       }
@@ -39,17 +42,18 @@ export class Forecast {
 
   private enrichedBeachData(
     points: Array<ForecastPoint>,
-    beach: Beach
+    beach: Beach,
+    rating:Rating
   ): Array<BeachForecast> {
-    return points.map((data) => ({
+    return points.map((point) => ({
       ...{
         lat: beach.lat,
         lng: beach.lng,
         name: beach.name,
         position: beach.position,
-        rating: 1,
+        rating: rating.getRatingForPoint(point),
       },
-      ...data,
+      ...point,
     }));
   }
 
