@@ -3,6 +3,7 @@ import { Beach } from '@src/models/beach';
 import { InternalError } from '@src/util/errors/internal-error';
 import { Rating } from './rating';
 import lodash from 'lodash'
+import logger from '@src/logger';
 
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
 
@@ -40,18 +41,14 @@ export class Forecast {
 
   private async calculateRating(beaches: Array<Beach>): Promise<Array<BeachForecast>>{
     const pointsWithCorrectSources: Array<BeachForecast> = [];
-
-      for (const beach of beaches) {
-        const rating = new this.RatingService(beach);
-
-        const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
-
-        const enrichedBeachData = this.enrichedBeachData(points, beach, rating);
-
-        pointsWithCorrectSources.push(...enrichedBeachData);
+    logger.info(`Preparing the forecast for ${beaches.length} beaches!`)
       
-      const timeForecast = this.mapForecastByTime(pointsWithCorrectSources);
+    for (const beach of beaches) {
+      const rating = new this.RatingService(beach);
+      const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
+      const enrichedBeachData = this.enrichedBeachData(points, beach, rating);
 
+      pointsWithCorrectSources.push(...enrichedBeachData);
     }
     return pointsWithCorrectSources;
   }
