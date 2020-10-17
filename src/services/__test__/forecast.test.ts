@@ -85,7 +85,6 @@ describe('Forecast service', () => {
             windDirection: 310.48,
             windSpeed: 100,
           },
-          
         ],
       },
     ];

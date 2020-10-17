@@ -9,10 +9,6 @@ import { UsersController } from './controllers/usersController';
 import logger from './logger';
 import expressPino from 'express-pino-logger';
 import cors from 'cors';
-import swaggerUI from "swagger-ui-express"
-import apiSchema from './api-schema.json'
-import { OpenApiValidator } from 'express-openapi-validator';
-import { OpenAPIV3 } from 'express-openapi-validator/dist/framework/types';
 
 export class SetupServer extends Server {
   constructor(private port = 3000 || process.env.PORT) {
@@ -21,7 +17,6 @@ export class SetupServer extends Server {
 
   public async init(): Promise<void> {
     this.setupExpress();
-    await this.docsSetup();
     this.setupControllers();
     await this.setupDatabase();
   }
@@ -55,15 +50,6 @@ export class SetupServer extends Server {
 
   public async close(): Promise<void> {
     await database.close();
-  }
-
-  private async docsSetup():Promise<void>{
-    this.app.use('docs', swaggerUI.serve, swaggerUI.setup(apiSchema))
-    await new OpenApiValidator({
-      apiSpec: apiSchema as OpenAPIV3.Document,
-      validateRequests: true, //we do it
-      validateResponses: true,
-    }).install(this.app);
   }
 
   //criar um server para os nossos testes

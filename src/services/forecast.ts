@@ -2,7 +2,7 @@ import { StormGlass, ForecastPoint } from '@src/clients/stormGlass';
 import { Beach } from '@src/models/beach';
 import { InternalError } from '@src/util/errors/internal-error';
 import { Rating } from './rating';
-import lodash from 'lodash'
+import lodash from 'lodash';
 import logger from '@src/logger';
 
 export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
@@ -19,30 +19,33 @@ export class ForecastProcessingInternalError extends InternalError {
 }
 
 export class Forecast {
-  constructor(protected stormGlass = new StormGlass(), protected RatingService:typeof Rating=Rating) {}
+  constructor(
+    protected stormGlass = new StormGlass(),
+    protected RatingService: typeof Rating = Rating
+  ) {}
 
   public async processForecastForBeaches(
     beaches: Array<Beach>
   ): Promise<Array<TimeForecast>> {
-    
-    try{
+    try {
       const beachForecast = await this.calculateRating(beaches);
       const timeForecast = this.mapForecastByTime(beachForecast);
-      
-      return timeForecast.map(time=>({
-        time: time.time,
-        forecast:lodash.orderBy(time.forecast, ['rating'], ['desc'])
-      }))
 
+      return timeForecast.map((time) => ({
+        time: time.time,
+        forecast: lodash.orderBy(time.forecast, ['rating'], ['desc']),
+      }));
     } catch (err) {
       throw new ForecastProcessingInternalError(err.message);
     }
   }
 
-  private async calculateRating(beaches: Array<Beach>): Promise<Array<BeachForecast>>{
+  private async calculateRating(
+    beaches: Array<Beach>
+  ): Promise<Array<BeachForecast>> {
     const pointsWithCorrectSources: Array<BeachForecast> = [];
-    logger.info(`Preparing the forecast for ${beaches.length} beaches!`)
-      
+    logger.info(`Preparing the forecast for ${beaches.length} beaches!`);
+
     for (const beach of beaches) {
       const rating = new this.RatingService(beach);
       const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
@@ -52,12 +55,11 @@ export class Forecast {
     }
     return pointsWithCorrectSources;
   }
-  
 
   private enrichedBeachData(
     points: Array<ForecastPoint>,
     beach: Beach,
-    rating:Rating
+    rating: Rating
   ): Array<BeachForecast> {
     return points.map((point) => ({
       ...{
